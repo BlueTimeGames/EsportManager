@@ -1,0 +1,15 @@
+﻿<Window x:Class="EsportManager.TeamSearch"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EsportManager"
+        mc:Ignorable="d"
+        Title="Vyhledávání týmů" Height="450" Width="400" ResizeMode="NoResize">
+    <Grid>
+        <ComboBox Name="TournamentsCB" HorizontalAlignment="Left" Margin="170,30,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="TournamentChange"/>
+        <ComboBox Name="GamesCB" HorizontalAlignment="Left" Margin="20,30,0,0" VerticalAlignment="Top" Width="130" SelectionChanged="GameChange"/>
+        <ListBox Name="TeamsLB" HorizontalAlignment="Left" Height="334" Margin="20,70,0,0" VerticalAlignment="Top" Width="350" MouseDoubleClick="ShowTeamDetail"/>
+
+    </Grid>
+</Window>

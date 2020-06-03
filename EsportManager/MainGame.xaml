@@ -1,0 +1,225 @@
+﻿<Window x:Class="EsportManager.MainGame"
+        
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Hlavní hra" Height="450" Width="800" Closing="Window_Closing" IsEnabledChanged="Window_IsEnabledChanged" Activated="Window_Activated" ResizeMode="NoResize">
+    
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Height="20" VerticalAlignment="Top" >
+            <MenuItem Header="Hra">
+                <MenuItem Name="Quit" Header="Ukončit" Click="QuitGame" />
+            </MenuItem>
+            <MenuItem Header="Procházet">
+                <MenuItem Name="Players" Header="Hráči" Click="ShowAllPlayers" />
+                <MenuItem Name="FreePlayers" Header="Volní hráči" Click="ShowFreePlyaers" />
+                <MenuItem Name="Teams" Header="Týmy" Click="ShowTeams" />
+                <MenuItem Name="PowerRanking" Header="Power Ranking" Click="ShowPowerRanking" />
+                <MenuItem Name="FreeEmployees" Header="Volní Trenéři" Click="ShowFreeEmployees" />
+            </MenuItem>
+            <MenuItem Header="Tým">
+                <MenuItem Name="Sponsors" Header="Sponzoři" Click="ShowSponsors" />
+                <MenuItem Name="Overview" Header="Přehled" Click="ShowOverview" />
+                <MenuItem Header="Trénink" Click="ShowTraining" />
+                <MenuItem Name="Traveling" Header="Cestování" Click="TravelingClick" />
+            </MenuItem>
+            <MenuItem Header="Turnaje">
+                <MenuItem Name="RegistererdTournaments" Header="Přihlášené" Click="ShowRegisteredTournaments" />
+                <MenuItem Name="OpenTournaments" Header="Volné turnaje" Click="ShowOpenTournaments" />
+            </MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Bottom" HorizontalAlignment="Right" Height="200" Width="800" >
+            <Image Name="Logo" Height="200" Width="200" HorizontalAlignment="Left" Margin="20,0,0,0"/>
+            <Label Name="TeamNameLabel" Content="Counter Logic Gaming" FontSize="30" Margin="225,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="550"/>
+            <Label Name="BudgetLabel" Content="Budget" Margin="225,55,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <Label Name="DateLabel" Content="Date" Margin="0,120,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Width="100"/>
+            <Button Name="NextActionButton" Margin="0,150,10,10" Content="Další den" Width="100" Click="GoToNextDay" HorizontalAlignment="Right" Style="{DynamicResource MyButtonStyle}"/>
+        </Grid> 
+        <TabControl Name="SectionTabs" Margin="0,0,0,0" DockPanel.Dock="Top">
+            <TabItem Name="Section1">
+                <Grid Name="Section1Body">
+                    <DataGrid FontSize="12" Name="Section1PlayersList" HorizontalAlignment="Right" Width="300" Margin="0,0,20,0" IsReadOnly="True" CanUserDeleteRows="False" CanUserAddRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" MouseDoubleClick="OpenPlayer">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Pozice" Width="57"
+                          Binding="{Binding PositionName}" />
+                            <DataGridTextColumn Header="Nick" Width="63"
+                          Binding="{Binding Nick}"/>
+                            <DataGridTextColumn Header="Jméno" Width="62"
+                          Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Příjmení" Width="63"
+                          Binding="{Binding Surname}"/>
+                            <DataGridTextColumn Header="E" Width="28"
+                          Binding="{Binding Energy}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid FontSize="12" Name="Section1TournamentsList" HorizontalAlignment="Right" Width="300" Margin="0,0,340,0" IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" MouseDoubleClick="OpenTournament">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Datum" Width="70"
+                          Binding="{Binding Date}"/>
+                            <DataGridTextColumn Header="Soupeř" Width="53"
+                          Binding="{Binding OpponentShortcut}"/>
+                            <DataGridTextColumn Header="Místo" Width="90"
+                          Binding="{Binding City}"/>
+                            <DataGridTextColumn Header="Turnaj" Width="60"
+                          Binding="{Binding Tournament}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Name="Section2">
+                <Grid Name="Section2Body">
+                    <DataGrid FontSize="12" Name="Section2PlayersList" HorizontalAlignment="Right" Width="300" Margin="0,0,20,0" IsReadOnly="True" CanUserDeleteRows="False" CanUserAddRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" MouseDoubleClick="OpenPlayer">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Pozice" Width="57"
+                          Binding="{Binding PositionName}" />
+                            <DataGridTextColumn Header="Nick" Width="63"
+                          Binding="{Binding Nick}"/>
+                            <DataGridTextColumn Header="Jméno" Width="62"
+                          Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Příjmení" Width="63"
+                          Binding="{Binding Surname}"/>
+                            <DataGridTextColumn Header="E" Width="28"
+                          Binding="{Binding Energy}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid FontSize="12" Name="Section2TournamentsList" HorizontalAlignment="Right" Width="300" Margin="0,0,340,0" IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" MouseDoubleClick="OpenTournament">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Datum" Width="70"
+                          Binding="{Binding Date}"/>
+                            <DataGridTextColumn Header="Soupeř" Width="53"
+                          Binding="{Binding OpponentShortcut}"/>
+                            <DataGridTextColumn Header="Místo" Width="90"
+                          Binding="{Binding City}"/>
+                            <DataGridTextColumn Header="Turnaj" Width="60"
+                          Binding="{Binding Tournament}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Name="Section3">
+                <Grid Name="Section3Body">
+                    <DataGrid FontSize="12" Name="Section3PlayersList" HorizontalAlignment="Right" Width="300" Margin="0,0,20,0" IsReadOnly="True" CanUserDeleteRows="False" CanUserAddRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" MouseDoubleClick="OpenPlayer">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Pozice" Width="57"
+                          Binding="{Binding PositionName}" />
+                            <DataGridTextColumn Header="Nick" Width="63"
+                          Binding="{Binding Nick}"/>
+                            <DataGridTextColumn Header="Jméno" Width="62"
+                          Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Příjmení" Width="63"
+                          Binding="{Binding Surname}"/>
+                            <DataGridTextColumn Header="E" Width="28"
+                          Binding="{Binding Energy}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid FontSize="12" Name="Section3TournamentsList" HorizontalAlignment="Right" Width="300" Margin="0,0,340,0" IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" MouseDoubleClick="OpenTournament">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Datum" Width="70"
+                          Binding="{Binding Date}"/>
+                            <DataGridTextColumn Header="Soupeř" Width="53"
+                          Binding="{Binding OpponentShortcut}"/>
+                            <DataGridTextColumn Header="Místo" Width="90"
+                          Binding="{Binding City}"/>
+                            <DataGridTextColumn Header="Turnaj" Width="60"
+                          Binding="{Binding Tournament}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Name="Section4">
+                <Grid Name="Section4Body">
+                    <DataGrid FontSize="12" Name="Section4PlayersList" HorizontalAlignment="Right" Width="300" Margin="0,0,20,0" IsReadOnly="True" CanUserDeleteRows="False" CanUserAddRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" MouseDoubleClick="OpenPlayer">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Pozice" Width="57"
+                          Binding="{Binding PositionName}" />
+                            <DataGridTextColumn Header="Nick" Width="63"
+                          Binding="{Binding Nick}"/>
+                            <DataGridTextColumn Header="Jméno" Width="62"
+                          Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Příjmení" Width="63"
+                          Binding="{Binding Surname}"/>
+                            <DataGridTextColumn Header="E" Width="28"
+                          Binding="{Binding Energy}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid FontSize="12" Name="Section4TournamentsList" HorizontalAlignment="Right" Width="300" Margin="0,0,340,0" IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" MouseDoubleClick="OpenTournament">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Datum" Width="70"
+                          Binding="{Binding Date}"/>
+                            <DataGridTextColumn Header="Soupeř" Width="53"
+                          Binding="{Binding OpponentShortcut}"/>
+                            <DataGridTextColumn Header="Místo" Width="90"
+                          Binding="{Binding City}"/>
+                            <DataGridTextColumn Header="Turnaj" Width="60"
+                          Binding="{Binding Tournament}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Name="Section5">
+                <Grid Name="Section5Body">
+                    <DataGrid FontSize="12" Name="Section5PlayersList" HorizontalAlignment="Right" Width="300" Margin="0,0,20,0" IsReadOnly="True" CanUserDeleteRows="False" CanUserAddRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" MouseDoubleClick="OpenPlayer">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Pozice" Width="57"
+                          Binding="{Binding PositionName}" />
+                            <DataGridTextColumn Header="Nick" Width="63"
+                          Binding="{Binding Nick}"/>
+                            <DataGridTextColumn Header="Jméno" Width="62"
+                          Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Příjmení" Width="63"
+                          Binding="{Binding Surname}"/>
+                            <DataGridTextColumn Header="E" Width="28"
+                          Binding="{Binding Energy}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid FontSize="12" Name="Section5TournamentsList" HorizontalAlignment="Right" Width="300" Margin="0,0,340,0" IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" MouseDoubleClick="OpenTournament">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Datum" Width="70"
+                          Binding="{Binding Date}"/>
+                            <DataGridTextColumn Header="Soupeř" Width="53"
+                          Binding="{Binding OpponentShortcut}"/>
+                            <DataGridTextColumn Header="Místo" Width="90"
+                          Binding="{Binding City}"/>
+                            <DataGridTextColumn Header="Turnaj" Width="60"
+                          Binding="{Binding Tournament}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Name="Section6">
+                <Grid Name="Section6Body">
+                    <DataGrid FontSize="12" Name="Section6PlayersList" HorizontalAlignment="Right" Width="300" Margin="0,0,20,0" IsReadOnly="True" CanUserDeleteRows="False" CanUserAddRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" MouseDoubleClick="OpenPlayer">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Pozice" Width="57"
+                          Binding="{Binding PositionName}" />
+                            <DataGridTextColumn Header="Nick" Width="63"
+                          Binding="{Binding Nick}"/>
+                            <DataGridTextColumn Header="Jméno" Width="62"
+                          Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Příjmení" Width="63"
+                          Binding="{Binding Surname}"/>
+                            <DataGridTextColumn Header="E" Width="28"
+                          Binding="{Binding Energy}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid FontSize="12" Name="Section6TournamentsList" HorizontalAlignment="Right" Width="300" Margin="0,0,340,0" IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="True" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" MouseDoubleClick="OpenTournament">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Datum" Width="70"
+                          Binding="{Binding Date}"/>
+                            <DataGridTextColumn Header="Soupeř" Width="53"
+                          Binding="{Binding OpponentShortcut}"/>
+                            <DataGridTextColumn Header="Místo" Width="90"
+                          Binding="{Binding City}"/>
+                            <DataGridTextColumn Header="Turnaj" Width="60"
+                          Binding="{Binding Tournament}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+
+        </TabControl>
+    </DockPanel>
+</Window>
