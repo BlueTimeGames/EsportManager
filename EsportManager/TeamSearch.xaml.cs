@@ -64,11 +64,11 @@ namespace EsportManager
             using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=.\" + databaseName + ";"))
             {
                 conn.Open();
-                string com = "select id_tournament, name from tournament";
+                string com = "select id_tournament, name from tournament where drawn=1";
                 SQLiteCommand command;
                 if (GamesCB.SelectedIndex > 0) 
                 {
-                    com += " where game=" + games.ElementAt(GamesCB.SelectedIndex - 1).ID;
+                    com += " and id_section=" + games.ElementAt(GamesCB.SelectedIndex - 1).ID;
                 }
                 com += ";";
                 command = new SQLiteCommand(com, conn);

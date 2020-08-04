@@ -5,25 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EsportManager"
         mc:Ignorable="d"
-        Title="Detail hráče" Height="310" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Detail hráče" Height="350" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Label Name="Name" HorizontalContentAlignment="Center" FontSize="20" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="372" Height="37"/>
         <Image Name="TeamLogo" HorizontalAlignment="Left" Height="150" Margin="10,52,0,0" VerticalAlignment="Top" Width="150"/>
         <Label Content="Sekce:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="165,83,0,0" VerticalAlignment="Top" Width="95"/>
         <Label Name="Section" Content="Label" HorizontalAlignment="Left" Margin="265,83,0,0" VerticalAlignment="Top"/>
-        <Label Content="Pozice:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="165,114,0,0" VerticalAlignment="Top" Width="95"/>
+        <Label Name="PositionLabel" Content="Pozice:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="165,114,0,0" VerticalAlignment="Top" Width="95"/>
         <Label Name="Position" Content="Label" HorizontalAlignment="Left" Margin="265,114,0,0" VerticalAlignment="Top"/>
-        <Label Content="Smlouva:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="165,145,0,0" VerticalAlignment="Top" Width="95"/>
-        <Label Name="Contract" Content="Label" HorizontalAlignment="Left" Margin="265,145,0,0" VerticalAlignment="Top"/>
-        <Label Content="Datum vypršení: " HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="165,176,0,0" VerticalAlignment="Top" Width="95"/>
-        <Label Name="ContractEnd" Content="Label" HorizontalAlignment="Left" Margin="265,176,0,0" VerticalAlignment="Top"/>
+        <Label Name="ContractLabel" Content="Smlouva:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="165,176,0,0" VerticalAlignment="Top" Width="95"/>
+        <Label Name="Contract" Content="Label" HorizontalAlignment="Left" Margin="265,176,0,0" VerticalAlignment="Top"/>
+        <Label Name="ContractEndLabel" Content="Konec smlouvy: " HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="165,207,0,0" VerticalAlignment="Top" Width="95"/>
+        <Label Name="ContractEnd" Content="Label" HorizontalAlignment="Left" Margin="265,207,0,0" VerticalAlignment="Top"/>
         <Label Content="Tým:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="165,52,0,0" VerticalAlignment="Top" Width="95"/>
         <Label Name="Team" Content="Label" HorizontalAlignment="Left" Margin="265,52,0,0" VerticalAlignment="Top"/>
-        <Label Content="Hodnota:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="165,207,0,0" VerticalAlignment="Top" Width="95"/>
-        <Label Name="Value" Content="Label" HorizontalAlignment="Left" Margin="265,207,0,0" VerticalAlignment="Top"/>
-        <Button Name="PlayerAction" Content="Koupit" HorizontalAlignment="Left" Margin="145,239,0,0" VerticalAlignment="Top" Width="100" Style="{DynamicResource MyButtonStyle}"/>
-        <Button Name="PlayerMove" Content="Přeřadit" HorizontalAlignment="Left" Margin="290,239,0,0" VerticalAlignment="Top" Width="90" Visibility="Hidden" Click="MovePlayerToAnotherSection" Style="{DynamicResource MyButtonStyle}"/>
-        <Button Name="PlayerResign" Content="Obnovit" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top" Width="90" Visibility="Hidden" Click="ResignPlayer" Style="{DynamicResource MyButtonStyle}"/>
-
+        <Label Name="ValueLabel" Content="Hodnota:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="165,238,0,0" VerticalAlignment="Top" Width="95"/>
+        <Label Name="Value" Content="Label" HorizontalAlignment="Left" Margin="265,238,0,0" VerticalAlignment="Top"/>
+        <Label Name="AgeLabel" Content="Věk:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="165,145,0,0" VerticalAlignment="Top" Width="95"/>
+        <Label Name="Age" Content="Label" HorizontalAlignment="Left" Margin="265,145,0,0" VerticalAlignment="Top"/>
+        <Button Name="PlayerAction" Content="Koupit" HorizontalAlignment="Left" Margin="145,270,0,0" VerticalAlignment="Top" Width="100" Style="{DynamicResource MyButtonStyle}"/>
+        <Button Name="PlayerMove" Content="Přeřadit" HorizontalAlignment="Left" Margin="290,270,0,0" VerticalAlignment="Top" Width="90" Visibility="Hidden" Click="MovePlayerToAnotherSection" Style="{DynamicResource MyButtonStyle}"/>
+        <Button Name="PlayerResign" Content="Obnovit" HorizontalAlignment="Left" Margin="10,270,0,0" VerticalAlignment="Top" Width="90" Visibility="Hidden" Click="ResignPlayer" Style="{DynamicResource MyButtonStyle}"/>
     </Grid>
 </Window>

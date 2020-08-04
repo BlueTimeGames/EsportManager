@@ -90,6 +90,7 @@
       <DependentUpon>FreeCoaches.xaml</DependentUpon>
     </Compile>
     <Compile Include="Game.cs" />
+    <Compile Include="GlobalMethodes.cs" />
     <Compile Include="MatchDetail.cs" />
     <Compile Include="Match.xaml.cs">
       <DependentUpon>Match.xaml</DependentUpon>
@@ -144,6 +145,9 @@
     </Compile>
     <Compile Include="ViewSponsors.xaml.cs">
       <DependentUpon>ViewSponsors.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WaitingDialog.xaml.cs">
+      <DependentUpon>WaitingDialog.xaml</DependentUpon>
     </Compile>
     <Page Include="AddNewSection.xaml">
       <SubType>Designer</SubType>
@@ -226,6 +230,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewSponsors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WaitingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -29,6 +29,7 @@ namespace EsportManager
         public int Value { get; set; }
         public int Salary { get; set; }
         public string ContractEnd { get; set; }
+        public int Age { get; set; }
 
 
         // pro zápas

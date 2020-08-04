@@ -75,10 +75,12 @@
         <Style TargetType="{x:Type ComboBoxItem}">
             <Setter Property="Background" Value="DodgerBlue"/>
             <Setter Property="Template">
+            
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBoxItem">
-                        <Border Name="Border" Padding="2" SnapsToDevicePixels="true">
+                        <Border Name="Border" Padding="2" SnapsToDevicePixels="True">
                             <ContentPresenter />
+                            
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsHighlighted" Value="true">
@@ -260,6 +262,7 @@
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
             <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
@@ -339,6 +342,5 @@
             <Style.Triggers>
             </Style.Triggers>
         </Style>
-
     </Application.Resources>
 </Application>

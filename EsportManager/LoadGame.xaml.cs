@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace EsportManager
     public partial class LoadGame : Window
     {
         public MainWindow MainWindow { get; set; }
+        string[] files;
         public LoadGame()
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -32,16 +34,26 @@ namespace EsportManager
 
         private void LoadGames()
         {
-            string[] files = System.IO.Directory.GetFiles("./games/", "*.db");
+            files = System.IO.Directory.GetFiles("./games/", "*.gam");
             for (int i = 0; i < files.Length; i++)
             {
-                GamesLB.Items.Add((files[i].Remove(files[i].Length - 3)).Substring(8)); //za to dopsat aktuální datum + tým, za který se hraje
+                using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=./" + files.ElementAt(i) + ";"))
+                {
+                    conn.Open();
+                    SQLiteCommand command = new SQLiteCommand("select team.name, date from info join team on team.id_team=info.id_team", conn);
+                    SQLiteDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        GamesLB.Items.Add((files[i].Remove(files[i].Length - 4)).Substring(8) + ", " + reader.GetString(0) + ", " + reader.GetString(1)); //za to dopsat aktuální datum + tým, za který se hraje
+                    }
+                    conn.Close();
+                }
             }
         }
 
         private void LoadGameClick(object sender, RoutedEventArgs e)
         {
-            MainGame win2 = new MainGame("./games/" + GamesLB.SelectedItem.ToString() + ".db");
+            MainGame win2 = new MainGame("./games/" + (files[GamesLB.SelectedIndex].Remove(files[GamesLB.SelectedIndex].Length - 4)).Substring(8) + ".gam");
             MainWindow.Close();
             this.Close();
             win2.ShowDialog();
@@ -61,7 +73,17 @@ namespace EsportManager
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            MainWindow.IsEnabled = true;
+        }
+
+        private void GamesDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (GamesLB.SelectedIndex != -1)
+            {
+                MainGame win2 = new MainGame("./games/" + (files[GamesLB.SelectedIndex].Remove(files[GamesLB.SelectedIndex].Length - 4)).Substring(8) + ".gam");
+                MainWindow.Close();
+                this.Close();
+                win2.ShowDialog();
+            }
         }
     }
 }

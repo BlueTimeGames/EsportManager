@@ -36,10 +36,10 @@ namespace EsportManager
 
         private void GetAllDatabasesToComboBox()
         {
-            string[] files = System.IO.Directory.GetFiles("./", "*.db");
+            string[] files = System.IO.Directory.GetFiles("./", "*.cem");
             for (int i = 0; i < files.Length; i++)
             {
-                DatabaseComboBox.Items.Add(files[i].Substring(2)); //za to dopsat aktuální datum + tým, za který se hraje
+                DatabaseComboBox.Items.Add(files[i].Substring(2, files[i].Length-6)); //za to dopsat aktuální datum + tým, za který se hraje
             }
         }
 
@@ -71,7 +71,7 @@ namespace EsportManager
                     }
                 }
                 //existuje název?
-                return !File.Exists(@".\games\" + GameNameTB.Text + ".db" );
+                return !File.Exists(@".\games\" + GameNameTB.Text + ".gam" );
             }
             return false;
         }
@@ -91,7 +91,7 @@ namespace EsportManager
             nationList.Clear();
             teamList.Clear();
             nationList.Add(new Nation(0, "Všechny národnosti"));
-            using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=.\" + DatabaseComboBox.SelectedItem  + ";"))
+            using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=.\" + DatabaseComboBox.SelectedItem  + ".cem;"))
             {
                 conn.Open();
 
@@ -108,6 +108,7 @@ namespace EsportManager
                 }
                 reader.Close();
             }
+            NationsCB.SelectedIndex = 0;
         }
 
 
@@ -116,43 +117,25 @@ namespace EsportManager
         {
             teamList.Clear();
             TeamListLB.Items.Clear();
-            using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=.\" + DatabaseComboBox.SelectedItem + ";"))
+            using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=.\" + DatabaseComboBox.SelectedItem + ".cem;"))
             {
                 List<int> citiesList = new List<int>();
                 SQLiteCommand command;
-                SQLiteDataReader reader;
                 conn.Open();
-                if (NationsCB.SelectedIndex > -1) 
+                if (NationsCB.SelectedIndex > 0) 
                 { 
-                    int nationID = nationList.ElementAt(NationsCB.SelectedIndex).IdNation;
-                    command = new SQLiteCommand("select id_city from city where id_nation=" + nationID, conn);
-                    reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        citiesList.Add(reader.GetInt32(0));
-                    }
-                    reader.Close();
-                    for (int i = 0; i < citiesList.Count; i++)
-                    {
-                        command = new SQLiteCommand("select id_team,name from team where name like '%" + TeamNameTW.Text + "%' and id_city=" + citiesList.ElementAt(i), conn);
-                        reader = command.ExecuteReader();
-                        while (reader.Read())
-                        {
-                            teamList.Add(new TeamBasic(reader.GetInt32(0), reader.GetString(1)));
-                        }
-                        reader.Close();
-                    }
+                    command = new SQLiteCommand("select id_team,team.name from team join city on team.id_city=city.id_city join nation on nation.id_nation=city.id_nation where team.name like '%" + TeamNameTW.Text + "%' and city.id_nation=" + nationList.ElementAt(NationsCB.SelectedIndex).IdNation + " order by team.name collate nocase;", conn);
                 }
                 else
                 {
-                    command = new SQLiteCommand("select id_team,name from team where name like '%" + TeamNameTW.Text + "%'", conn);
-                    reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        teamList.Add(new TeamBasic(reader.GetInt32(0), reader.GetString(1)));
-                    }
-                    reader.Close();
+                    command = new SQLiteCommand("select id_team,name from team where name like '%" + TeamNameTW.Text + "%' order by name collate nocase", conn);
                 }
+                SQLiteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    teamList.Add(new TeamBasic(reader.GetInt32(0), reader.GetString(1)));
+                }
+                reader.Close();
 
                 for (int i = 0; i < teamList.Count; i++)
                 {
@@ -190,8 +173,13 @@ namespace EsportManager
 
         private void StartGame(object sender, RoutedEventArgs e)
         {
-            File.Copy(@"./" + DatabaseComboBox.SelectedItem, @"./games/" + GameNameTB.Text + ".db");
-            using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=./games/" + GameNameTB.Text + ".db;"))
+            StartGame();
+        }
+
+        private void StartGame()
+        {
+            File.Copy(@"./" + DatabaseComboBox.SelectedItem + ".cem", @"./games/" + GameNameTB.Text + ".gam");
+            using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=./games/" + GameNameTB.Text + ".gam;"))
             {
                 conn.Open();
                 SQLiteCommand command = new SQLiteCommand("update info set id_team=" + teamList.ElementAt(TeamListLB.SelectedIndex).IdTeam + ", date='2019-01-01'", conn);
@@ -219,7 +207,7 @@ namespace EsportManager
                 }
                 command = new SQLiteCommand(com, conn);
                 command.ExecuteReader();
-                MainGame win2 = new MainGame("./games/" + GameNameTB.Text + ".db");
+                MainGame win2 = new MainGame("./games/" + GameNameTB.Text + ".gam");
                 Mainwindow.Close();
                 this.Close();
                 win2.ShowDialog();
@@ -243,6 +231,14 @@ namespace EsportManager
         {
             
             Mainwindow.IsEnabled = true;
+        }
+
+        private void TeamListLB_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (StartButton.IsEnabled && TeamListLB.SelectedIndex > -1)
+            {
+                StartGame();
+            }
         }
     }
 }

@@ -115,9 +115,9 @@ namespace EsportManager
             if (d.SelectedIndex > -1)
             {
                 List<Player> l = (List<Player>)d.ItemsSource;
-                if (l.ElementAt(d.SelectedIndex).IdPlayer != 0)
+                if (l.ElementAt(d.SelectedIndex).IdPlayer > 0)
                 {
-                    PlayerDetail win2 = new PlayerDetail(databaseName, l.ElementAt(d.SelectedIndex).IdPlayer);
+                    PlayerDetail win2 = new PlayerDetail(databaseName, l.ElementAt(d.SelectedIndex).IdPlayer, true );
                     win2.ShowDialog();
                     AddPlayersToGrid();
                 }

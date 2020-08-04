@@ -8,11 +8,17 @@
         Title="Hlavní menu" Height="480" Width="800" Closing="Window_Closing" ResizeMode="NoResize">
     <Grid>
         <Image Name="Background" Margin="0,0,0,0" Stretch="Fill" />
-        <Button Name="NewGame"  Content="Nová hra" Margin="320,115,320,0" FontSize="25" VerticalAlignment="Top" Height="50" Click="NewGame_Click" Style="{DynamicResource MyButtonStyle}"/>
-        <Button Name="LoadGame" Content="Načíst hru" Margin="320,215,320,0" FontSize="25" VerticalAlignment="Top"  Height="50" Click="LoadGameClick" Style="{DynamicResource MyButtonStyle}"/>
-        <Button Name="QuitGame" Content="Ukončit hru" Margin="320,315,320,0" FontSize="25" VerticalAlignment="Top" Height="50" Click="Quit" Style="{DynamicResource MyButtonStyle}"/>
-        <Button Name="Twitter" Content="Twitter" Margin="654,140,10,0" FontSize="25" VerticalAlignment="Top" Height="80" Width="80" Click="Twitter_Click" Visibility="Hidden"/>
-        <Button Name="Discord" Content="Discord" Margin="654,240,10,0" FontSize="25" VerticalAlignment="Top" Height="80" Width="80" Click="Discord_Click" Visibility="Hidden"/>
-        <Button Name="Facebook" Content="Facebook" Margin="654,340,10,0" FontSize="25" VerticalAlignment="Top" Height="80" Width="80" Click="Facebook_Click" Visibility="Hidden"/>
+        
+        <Button Name="NewGame"  Content="Nová hra" Margin="320,140,320,0" FontSize="25" VerticalAlignment="Top" Height="50" Click="NewGame_Click" Style="{DynamicResource MyButtonStyle}"/>
+        <Button Name="LoadGame" Content="Načíst hru" Margin="320,240,320,0" FontSize="25" VerticalAlignment="Top"  Height="50" Click="LoadGameClick" Style="{DynamicResource MyButtonStyle}"/>
+        <Button Name="QuitGame" Content="Ukončit hru" Margin="320,340,320,0" FontSize="25" VerticalAlignment="Top" Height="50" Click="Quit" Style="{DynamicResource MyButtonStyle}"/>
+        <Button Name="Twitter" Content="Twitter" Margin="555,370,10,0" HorizontalAlignment="Left" FontSize="16" VerticalAlignment="Top" Height="60" Width="60" Click="Twitter_Click" Style="{DynamicResource MyButtonStyle}"/>
+        <Button Name="Discord" Content="Discord" Margin="635,370,10,0" HorizontalAlignment="Left" FontSize="15" VerticalAlignment="Top" Height="60" Width="60" Click="Discord_Click" Style="{DynamicResource MyButtonStyle}"/>
+        <Button Name="Facebook" Content="Facebook" Margin="715,370,0,0" HorizontalAlignment="Left" FontSize="12" VerticalAlignment="Top" Height="60" Width="60" Click="Facebook_Click" Style="{DynamicResource MyButtonStyle}"/>
+        <Label Content="Casual Esport Manager" HorizontalAlignment="Center" FontSize="70" Margin="0,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="CREDITS" HorizontalAlignment="Left" FontSize="25" Margin="30,0,0,30" VerticalAlignment="Bottom" MouseDown="Label_MouseDown" />
+        <Label Name="Gunny" Content="Programování: František 'Gunny' Soldán" HorizontalAlignment="Left"  FontSize="13" Margin="30,300,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+        <Label Name="BlackStar" Content="Soupisky: Mykola 'BlackStar' Klebus" HorizontalAlignment="Left"  FontSize="13" Margin="30,320,0,0" VerticalAlignment="Top" Visibility="Hidden" />
+        <Label Name="Peta" Content="Logo hry: Petra Šimonová" HorizontalAlignment="Left"  FontSize="13" Margin="30,340,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
     </Grid>
 </Window>

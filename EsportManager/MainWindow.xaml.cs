@@ -27,8 +27,8 @@ namespace EsportManager
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
-            BitmapImage image = new BitmapImage(new Uri(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/pictures/menu.jpg", UriKind.Absolute));
-            Background.Source = image;
+            /*BitmapImage image = new BitmapImage(new Uri(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/pictures/menu.jpg", UriKind.Absolute));
+            Background.Source = image;*/
             
             
         }
@@ -71,6 +71,23 @@ namespace EsportManager
         private void Twitter_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://twitter.com/BlueTimeGames");
+        }
+
+        private void Label_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (BlackStar.Visibility == Visibility.Hidden)
+            {
+                Gunny.Visibility = Visibility.Visible;
+                BlackStar.Visibility = Visibility.Visible;
+                Peta.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Gunny.Visibility = Visibility.Hidden;
+                BlackStar.Visibility = Visibility.Hidden;
+                Peta.Visibility = Visibility.Hidden;
+            }
+            
         }
     }
 }

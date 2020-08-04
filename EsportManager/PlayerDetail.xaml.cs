@@ -22,19 +22,118 @@ namespace EsportManager
     public partial class PlayerDetail : Window
     {
         Player player;
+        Coach coach;
         string databaseName;
         int myTeam;
         int playerID;
         int reputation;
         int budget;
         string date;
-        public PlayerDetail(string databaseNameI, int playerI)
+        bool isPlayer;
+        public PlayerDetail(string databaseNameI, int playerI, bool player)
         {
             databaseName = databaseNameI;
             playerID = playerI;
-
+            isPlayer = player;
             InitializeComponent();
-            SetPlayerProperties();
+            if (isPlayer)
+            {
+                SetPlayerProperties();
+            }
+            else
+            {
+                playerID = 0 - playerI;
+                SetCoachProperties();
+            }
+            
+        }
+
+        private void SetCoachProperties()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=.\" + databaseName + ";"))
+            {
+
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("select coach.name, coach.nick, coach.surname, team.logo, team.name, section.name, coach.salary, coach.contractEnd, coach.value, team.id_team, coach.training, section.id_section from coach join team on coach.id_team=team.id_team join section on section.id_section=coach.id_section where coach.id_coach=" + playerID + ";", conn);
+                SQLiteDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    coach = new Coach(playerID, reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(5), reader.GetInt32(6), reader.GetString(7), reader.GetInt32(8), reader.GetInt32(9), reader.GetInt32(10), reader.GetString(4));
+
+                    byte[] data = (byte[])reader[3];
+                    BitmapImage imageSource = new BitmapImage();
+                    using (MemoryStream ms = new MemoryStream(data))
+                    {
+                        imageSource.BeginInit();
+                        imageSource.StreamSource = ms;
+                        imageSource.CacheOption = BitmapCacheOption.OnLoad;
+                        imageSource.EndInit();
+                    }
+                    TeamLogo.Source = imageSource;
+                }
+                reader.Close();
+                command = new SQLiteCommand("select info.id_team, team.reputation, team.budget, info.date from info join team on info.id_team=team.id_team;", conn);
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    myTeam = reader.GetInt32(0);
+                    reputation = reader.GetInt32(1);
+                    budget = reader.GetInt32(2);
+                    date = reader.GetString(3);
+                }
+                reader.Close();
+                // zjištění akce která se bude s trenér po stisknutí tlačítka dít
+                if (coach.IdTeam == 0)
+                {
+                    // trenér je volný
+                    PlayerAction.Click += SignFreeCoach;
+                    PlayerAction.Content = "Podepsat trenéra";
+                }
+                else if (coach.IdTeam == myTeam)
+                {
+                    // trenér je členem týmu
+                    PlayerAction.Click += DropCoach;
+                    PlayerAction.Content = "Propustit trenéra";
+                    PlayerResign.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    // trenér je členem týmu
+                    PlayerAction.Click += BuyCoach;
+                    PlayerAction.Content = "Koupit trenéra";
+                }
+            }
+            Name.Content = coach.Name + " '" + coach.Nick + "' " + coach.Surname;
+            Team.Content = coach.TeamName;
+            Section.Content = coach.SectionName;
+            Position.Visibility = Visibility.Hidden;
+            PositionLabel.Visibility = Visibility.Hidden;
+            Contract.Content = coach.Salary + "$";
+            ContractEnd.Content = coach.ContractEnd;
+            Value.Content = coach.Value + "$";
+            Age.Visibility = Visibility.Hidden;
+            AgeLabel.Visibility = Visibility.Hidden;
+            Contract.Margin =  new Thickness(Contract.Margin.Left, Contract.Margin.Top - 62, Contract.Margin.Right, Contract.Margin.Bottom);
+            ContractEnd.Margin =  new Thickness(ContractEnd.Margin.Left, ContractEnd.Margin.Top - 62, ContractEnd.Margin.Right, ContractEnd.Margin.Bottom);
+            Value.Margin =  new Thickness(Value.Margin.Left, Value.Margin.Top - 62, Value.Margin.Right, Value.Margin.Bottom);
+            ContractLabel.Margin =  new Thickness(ContractLabel.Margin.Left, ContractLabel.Margin.Top - 62, ContractLabel.Margin.Right, ContractLabel.Margin.Bottom);
+            ContractEndLabel.Margin =  new Thickness(ContractEndLabel.Margin.Left, ContractEndLabel.Margin.Top - 62, ContractEndLabel.Margin.Right, ContractEndLabel.Margin.Bottom);
+            ValueLabel.Margin =  new Thickness(ValueLabel.Margin.Left, ValueLabel.Margin.Top - 62, ValueLabel.Margin.Right, ValueLabel.Margin.Bottom);
+        }
+
+        private void BuyCoach(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DropCoach(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SignFreeCoach(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void SetPlayerProperties()
@@ -43,11 +142,13 @@ namespace EsportManager
             {
 
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("select player.name, player.nick, player.surname, team.logo, team.name, section.name, position_type.name, player.salary, player.contractEnd, player.value, team.id_team, player.individualSkill, player.teamplaySkill, player.id_teamxsection, section.id_section, player.playerCoop from player join teamxsection on player.id_teamxsection=teamxsection.id_teamxsection join team on teamxsection.id_team=team.id_team join section on section.id_section=player.id_section join position_type on player.id_position=id_position_in_game and section.id_section=position_type.id_section where player.id_player=" + playerID + ";", conn);
+                SQLiteCommand command = new SQLiteCommand("select player.name, player.nick, player.surname, team.logo, team.name, section.name, position_type.name, player.salary, player.contractEnd, player.value, team.id_team, player.individualSkill, player.teamplaySkill, player.id_teamxsection, section.id_section, player.playerCoop, player.birth_date from player join teamxsection on player.id_teamxsection=teamxsection.id_teamxsection join team on teamxsection.id_team=team.id_team join section on section.id_section=player.id_section join position_type on player.id_position=id_position_in_game and section.id_section=position_type.id_section where player.id_player=" + playerID + ";", conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     player = new Player(playerID, reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetInt32(9), reader.GetInt32(10), reader.GetInt32(11), reader.GetInt32(12), reader.GetInt32(13), reader.GetInt32(14), reader.GetInt32(15));
+                    player.Age = GlobalMethodes.CountAge(GlobalMethodes.ParseDate(reader.GetString(16)), GlobalMethodes.ParseDate("2020-01-01"));
+
 
                     byte[] data = (byte[])reader[3];
                     BitmapImage imageSource = new BitmapImage();
@@ -64,12 +165,12 @@ namespace EsportManager
                 else
                 {
                     reader.Close();
-                    command = new SQLiteCommand("select player.name, player.nick, player.surname, section.name, position_type.name, player.salary, player.contractEnd, player.value, player.individualSkill, player.teamplaySkill, section.id_section, player.playerCoop from player join section on section.id_section=player.id_section join position_type on player.id_position=id_position_in_game and section.id_section=position_type.id_section where player.id_player=" + playerID + ";", conn);
+                    command = new SQLiteCommand("select player.name, player.nick, player.surname, section.name, position_type.name, player.salary, player.contractEnd, player.value, player.individualSkill, player.teamplaySkill, section.id_section, player.playerCoop, player.birth_date from player join section on section.id_section=player.id_section join position_type on player.id_position=id_position_in_game and section.id_section=position_type.id_section where player.id_player=" + playerID + ";", conn);
                     reader = command.ExecuteReader();
                     if (reader.Read())
                     {
                         player = new Player(playerID, reader.GetString(0), reader.GetString(1), reader.GetString(2), "Volný hráč", reader.GetString(3), reader.GetString(4), reader.GetInt32(5), reader.GetString(6), reader.GetInt32(7), 0, reader.GetInt32(8), reader.GetInt32(9), 0, reader.GetInt32(10), reader.GetInt32(11));
-
+                        player.Age = GlobalMethodes.CountAge(GlobalMethodes.ParseDate(reader.GetString(12)), GlobalMethodes.ParseDate("2020-01-01"));
                     }
                 }
                 reader.Close();
@@ -80,6 +181,7 @@ namespace EsportManager
                 Contract.Content = player.Salary + "$";
                 ContractEnd.Content = player.ContractEnd;
                 Value.Content = player.Value + "$";
+                Age.Content = player.Age;
 
                 command = new SQLiteCommand("select info.id_team, team.reputation, team.budget, info.date from info join team on info.id_team=team.id_team;", conn);
                 reader = command.ExecuteReader();
