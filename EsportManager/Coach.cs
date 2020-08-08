@@ -48,5 +48,19 @@ namespace EsportManager
             Surname = surname;
             IdCoach = id_coach;
         }
+
+        public Coach(int id_coach, string name, string nick, string surname, string teamName, string section, int value, int training, int sectionId)
+        {
+            SectionName = section;
+            Nick = nick;
+            Name = name;
+            TeamName = teamName;
+            Surname = surname;
+            SectionName = section;
+            IdCoach = id_coach;
+            Value = value;
+            Training = training;
+            IdSection = sectionId;
+        }
     }
 }

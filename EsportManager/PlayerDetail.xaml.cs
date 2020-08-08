@@ -71,6 +71,16 @@ namespace EsportManager
                     }
                     TeamLogo.Source = imageSource;
                 }
+                else
+                {
+                    reader.Close();
+                    command = new SQLiteCommand("select coach.name, coach.nick, coach.surname, section.name, coach.value, coach.training, section.id_section from coach join section on section.id_section = coach.id_section where coach.id_coach = " + playerID + "; ", conn);
+                    reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        coach = new Coach(playerID, reader.GetString(0), reader.GetString(1), reader.GetString(2), "Volný trenér", reader.GetString(3), reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6));
+                    }
+                }
                 reader.Close();
                 command = new SQLiteCommand("select info.id_team, team.reputation, team.budget, info.date from info join team on info.id_team=team.id_team;", conn);
                 reader = command.ExecuteReader();
@@ -123,7 +133,42 @@ namespace EsportManager
 
         private void BuyCoach(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            int year = int.Parse(date.Substring(0, 4));
+            using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=.\" + databaseName + ";"))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("select count(*) from '" + year + "match" + coach.IdSection + "' where match_date=" + date + " and (id_teamxsection_home=" + coach. + " or id_teamxsection_away=" + coach.IdTeamSection + ");", conn);
+                SQLiteDataReader reader = command.ExecuteReader();
+            }
+            if (coach.Training < reputation - 15 || coach.Training > reputation + 15)
+            {
+                MessageBox.Show("Trenér nemá zájem působit ve vašem týmu", "Podpis smlouvy", MessageBoxButton.OK);
+            }
+            else if (budget < coach.Value * 1.5)
+            {
+                MessageBox.Show("Nemáte dostatek financí na podpis hráče.", "Podpis smlouvy", MessageBoxButton.OK);
+            }
+            else
+            {
+                int newSalary = 1000 + (int)(((reputation * coach.Training) - 3600) * 1.02);
+                MessageBoxResult result = MessageBox.Show("Chystáte se vykoupit trenéra " + coach.Nick + ". " + coach.TeamName + " po Vás požaduje " + coach.Value * 1.5 + "$. Jeho smlouva je na rok za " + newSalary + "$ měsíčně. Chcete smlouvu podepsat?", "Podpis smlouvy", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    year++;
+                    player.ContractEnd = year.ToString() + player.ContractEnd.Remove(0, 4);
+                    int playerValue = (newSalary * 100 / 3);
+                    playerValue = playerValue / 100;
+                    playerValue = playerValue * 100;
+                    using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=.\" + databaseName + ";"))
+                    {
+                        conn.Open();
+                        SQLiteCommand command = new SQLiteCommand("update player set id_teamxsection=" + myTeam + ", contractEnd='" + player.ContractEnd + "', value=" + playerValue + ", salary=" + newSalary + " where id_player=" + playerID + ";" +
+                            " update team set budget=budget-" + player.Value * 1.5 + " where id_team=" + myTeam + ";", conn);
+                        command.ExecuteReader();
+                    }
+                    this.Close();
+                }
+            }
         }
 
         private void DropCoach(object sender, RoutedEventArgs e)

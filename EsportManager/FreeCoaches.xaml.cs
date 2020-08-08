@@ -95,7 +95,14 @@ namespace EsportManager
 
         private void SignPlayer(object sender, MouseButtonEventArgs e)
         {
-            int training, teamId, reputation, salary, budget;
+            if (FreePlayersGrid.SelectedIndex > 0)
+            {
+                PlayerDetail win2 = new PlayerDetail(databaseName, 0 - coaches.ElementAt(FreePlayersGrid.SelectedIndex).IdCoach, false);
+                win2.ShowDialog();
+                AddPlayersToGrid();
+            }
+
+            /*int training, teamId, reputation, salary, budget;
             string nick, date;
             if (FreePlayersGrid.SelectedIndex >= 0)
             {
@@ -143,8 +150,8 @@ namespace EsportManager
                     }
                 }
                 
-            }
-            AddPlayersToGrid();
+            }*/
+            //AddPlayersToGrid();
         }
     }
 }
