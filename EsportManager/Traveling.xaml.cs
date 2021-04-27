@@ -20,17 +20,17 @@ namespace EsportManager
     /// </summary>
     public partial class Traveling : Window
     {
+        MCity mCity;
         string databaseName;
         int teamId;
         int teamHomeCity;
         List<TeamSection> sections;
-        List<City> cities;
         public Traveling(string databaseNameI, int teamIdI)
         {
             databaseName = databaseNameI;
             teamId = teamIdI;
             sections = new List<TeamSection>();
-            cities = new List<City>();
+            mCity = new MCity();
             InitializeComponent();
             SetComboBoxes();
             
@@ -61,21 +61,15 @@ namespace EsportManager
                 }
                 reader.Close();
 
-                command = new SQLiteCommand("select id_city, name from city order by name", conn);
-                reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    cities.Add(new City(reader.GetInt32(0), reader.GetString(1)));
-                }
-                reader.Close();
+                mCity.getAllCities();
             }
             for (int i = 0; i < sections.Count; i++)
             {
                 SectionsCB.Items.Add(sections.ElementAt(i).SectionName);
             }
-            for (int i = 0; i < cities.Count; i++)
+            for (int i = 0; i < mCity.Cities.Count; i++)
             {
-                CitiesCB.Items.Add(cities.ElementAt(i).Name);
+                CitiesCB.Items.Add(mCity.Cities[i].Name);
             }
             SectionsCB.SelectedIndex = 0;
             CitiesCB.SelectedIndex = 0;
@@ -99,12 +93,12 @@ namespace EsportManager
 
         private void CityChange(object sender, SelectionChangedEventArgs e)
         {
-            Move.IsEnabled = !(cities.ElementAt(CitiesCB.SelectedIndex).ID == teamHomeCity);
+            Move.IsEnabled = !(mCity.Cities[CitiesCB.SelectedIndex].ID == teamHomeCity);
         }
 
         private void MovePlayers(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Vážně chcete přesunout tým do " + cities.ElementAt(CitiesCB.SelectedIndex).Name + ". Cesta stojí 5000$ a každý den mimo gaming house stojí 1000$.", "Chystáte se přesunout tým.", MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show("Vážně chcete přesunout tým do " + mCity.Cities[CitiesCB.SelectedIndex].Name + ". Cesta stojí 5000$ a každý den mimo gaming house stojí 1000$.", "Chystáte se přesunout tým.", MessageBoxButton.YesNo);
             if (result != MessageBoxResult.Yes)
             {
                 return;
@@ -112,7 +106,7 @@ namespace EsportManager
             using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=.\" + databaseName + ";"))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("update teamxsection set id_city=" + cities.ElementAt(CitiesCB.SelectedIndex).ID + " where id_teamxsection=" + sections.ElementAt(SectionsCB.SelectedIndex).ID + ";", conn);
+                SQLiteCommand command = new SQLiteCommand("update teamxsection set id_city=" + mCity.Cities[CitiesCB.SelectedIndex].ID + " where id_teamxsection=" + sections.ElementAt(SectionsCB.SelectedIndex).ID + ";", conn);
                 command.ExecuteReader();
                 command = new SQLiteCommand("update team set budget=budget-5000 where id_team=" + teamId + ";", conn);
                 command.ExecuteReader();

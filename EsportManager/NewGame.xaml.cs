@@ -13,7 +13,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TeamEdit;
 
 namespace EsportManager
 {
@@ -23,11 +22,12 @@ namespace EsportManager
     public partial class NewGame : Window
     {
         public MainWindow Mainwindow { get; set; }
-        List<Nation> nationList = new List<Nation>();
         List<TeamBasic> teamList = new List<TeamBasic>();
+        MNation mNation;
 
         public NewGame()
         {
+            mNation = new MNation();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
             GetAllDatabasesToComboBox();
@@ -88,25 +88,12 @@ namespace EsportManager
 
         private void GetAllNationsToComboBox()
         {
-            nationList.Clear();
             teamList.Clear();
-            nationList.Add(new Nation(0, "Všechny národnosti"));
-            using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=.\" + DatabaseComboBox.SelectedItem  + ".cem;"))
+            mNation.Nations.Add(new ONation(0, "Všechny národnosti"));
+            mNation.getAllResidentialNations();
+            for (int i = 0; i < mNation.Nations.Count; i++)
             {
-                conn.Open();
-
-                SQLiteCommand command = new SQLiteCommand("select nation.id_nation,nation.name from (select city.id_city,city.name,city.id_nation as nat from team inner join city on city.id_city=team.id_city group by city.id_city) inner join nation on nat=nation.id_nation group by nation.id_nation", conn);
-                SQLiteDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    nationList.Add(new Nation(reader.GetInt32(0), reader.GetString(1)));
-                }
-                for (int i = 0; i < nationList.Count; i++)
-                {
-                    NationsCB.Items.Add(nationList.ElementAt(i).Name);
-                }
-                reader.Close();
+                NationsCB.Items.Add(mNation.Nations[i].Name);
             }
             NationsCB.SelectedIndex = 0;
         }
@@ -124,7 +111,7 @@ namespace EsportManager
                 conn.Open();
                 if (NationsCB.SelectedIndex > 0) 
                 { 
-                    command = new SQLiteCommand("select id_team,team.name from team join city on team.id_city=city.id_city join nation on nation.id_nation=city.id_nation where team.name like '%" + TeamNameTW.Text + "%' and city.id_nation=" + nationList.ElementAt(NationsCB.SelectedIndex).IdNation + " order by team.name collate nocase;", conn);
+                    command = new SQLiteCommand("select id_team,team.name from team join city on team.id_city=city.id_city join nation on nation.id_nation=city.id_nation where team.name like '%" + TeamNameTW.Text + "%' and city.id_nation=" + mNation.Nations[NationsCB.SelectedIndex].IdNation + " order by team.name collate nocase;", conn);
                 }
                 else
                 {
@@ -216,6 +203,7 @@ namespace EsportManager
 
         private void DatabaseChanged(object sender, SelectionChangedEventArgs e)
         {
+            GlobalAtributes.DatabaseName = DatabaseComboBox.SelectedItem.ToString();
             GetAllNationsToComboBox();
             ComboBox c = (ComboBox)sender;
             if (c.SelectedIndex > -1)

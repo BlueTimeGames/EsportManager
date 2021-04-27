@@ -133,7 +133,7 @@ namespace EsportManager
 
         private void BuyCoach(object sender, RoutedEventArgs e)
         {
-            int year = int.Parse(date.Substring(0, 4));
+            /*int year = int.Parse(date.Substring(0, 4));
             using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=.\" + databaseName + ";"))
             {
                 conn.Open();
@@ -168,7 +168,7 @@ namespace EsportManager
                     }
                     this.Close();
                 }
-            }
+            }*/
         }
 
         private void DropCoach(object sender, RoutedEventArgs e)
@@ -192,7 +192,7 @@ namespace EsportManager
                 if (reader.Read())
                 {
                     player = new Player(playerID, reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetInt32(9), reader.GetInt32(10), reader.GetInt32(11), reader.GetInt32(12), reader.GetInt32(13), reader.GetInt32(14), reader.GetInt32(15));
-                    player.Age = GlobalMethodes.CountAge(GlobalMethodes.ParseDate(reader.GetString(16)), GlobalMethodes.ParseDate("2020-01-01"));
+                    player.Age = GlobalMethodes.CountAge(GlobalMethodes.ParseDate(reader.GetString(16)));
 
 
                     byte[] data = (byte[])reader[3];
@@ -215,7 +215,7 @@ namespace EsportManager
                     if (reader.Read())
                     {
                         player = new Player(playerID, reader.GetString(0), reader.GetString(1), reader.GetString(2), "Volný hráč", reader.GetString(3), reader.GetString(4), reader.GetInt32(5), reader.GetString(6), reader.GetInt32(7), 0, reader.GetInt32(8), reader.GetInt32(9), 0, reader.GetInt32(10), reader.GetInt32(11));
-                        player.Age = GlobalMethodes.CountAge(GlobalMethodes.ParseDate(reader.GetString(12)), GlobalMethodes.ParseDate("2020-01-01"));
+                        player.Age = GlobalMethodes.CountAge(GlobalMethodes.ParseDate(reader.GetString(12)));
                     }
                 }
                 reader.Close();

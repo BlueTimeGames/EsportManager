@@ -83,14 +83,14 @@
     <Compile Include="AddNewSection.xaml.cs">
       <DependentUpon>AddNewSection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="City.cs" />
+    <Compile Include="ACity.cs" />
     <Compile Include="Coach.cs" />
     <Compile Include="DailyTraining.cs" />
     <Compile Include="FreeCoaches.xaml.cs">
       <DependentUpon>FreeCoaches.xaml</DependentUpon>
     </Compile>
     <Compile Include="Game.cs" />
-    <Compile Include="GlobalMethodes.cs" />
+    <Compile Include="AGlobal.cs" />
     <Compile Include="MatchDetail.cs" />
     <Compile Include="Match.xaml.cs">
       <DependentUpon>Match.xaml</DependentUpon>
@@ -111,7 +111,7 @@
     <Compile Include="MainGame.xaml.cs">
       <DependentUpon>MainGame.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Nation.cs" />
+    <Compile Include="ANation.cs" />
     <Compile Include="NewGame.xaml.cs">
       <DependentUpon>NewGame.xaml</DependentUpon>
     </Compile>
